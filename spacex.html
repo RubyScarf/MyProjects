@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceX Missions</title>
+    <link rel="stylesheet" href="./styles/consistency.css">
+    <link rel="stylesheet" href="./styles/nav.css">
+    <link rel="stylesheet" href="./styles/record.css">
+    <script src="./scripts/spacexcarousel.js" defer></script>
+<style>
+        .countdown {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <span class="logo">SUWAN</span>
+    <a href="./Project.html">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+</nav>
+    <h1>SpaceX</h1>
+    <div class="carousel"></div>
+        <div class="countdown">
+            <h2>Countdown to Next Launch</h2>
+            <p id="countdown-timer">Loading...</p>
+        </div>
+        <h2>Next Launch Details</h2>
+        <ul id="next-launch-details"></ul>
+            
+        <script>
+            // Set the date and time for the next game
+            const nextGameDate = new Date("October 15, 2025 23:42:00").getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const timeLeft = nextGameDate - now;
+
+                if (timeLeft > 0) {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown-timer").innerText = 
+                        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                } else {
+                    document.getElementById("countdown-timer").innerText = "Live has started!";
+                }
+            }
+
+            setInterval(updateCountdown, 1000);
+        </script>
+        <h2>Mission Records</h2>
+
+        <script src="./scripts/spacex.js"></script>
+        <table id="spacexTable" border="1">
+            <thead>
+                <tr>
+                    <th>Mission Date</th>
+                    <th>Mission Name</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody id="spacexTableBody">
+                <!-- Rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    <script>
+        function loadSpaceXData() {
+            const launches = JSON.parse(localStorage.getItem("spacexMissions")) || [];
+            const table = document.getElementById("spacexTableBody");
+        
+            table.innerHTML = "";
+        
+            const staticLaunches = [
+                {
+                    date: "October 13, 2025",
+                    mission: "Starship Test Flight 11",
+                    status: "Successful",
+                    notes: "Yo, First stage booster was cool as frick. ... it blew up on splashdown"
+                },
+                {
+                    date: "August 26, 2025",
+                    mission: "Starship Test Flight 10",
+                    status: "Successful",
+                    notes: "The launch was beautiful, the stage separation was beautiful, they sent out load so starlink satellites were sent out successfully, they landed in the general area they expected to, most of the heat shield tile things were intact, it was so cool."
+                },
+                {
+                    date: "August 25, 2025",
+                    mission: "Starship Test Flight",
+                    status: "SCRUBBED",
+                    notes: "SCRUBBED AGAIN SOB"
+                },
+                {
+                    date: "August 24, 2025",
+                    mission: "Starship Test Flight",
+                    status: "Postponed",
+                    notes: "Ground crew had a few issues they needed to resolve and so they decided to stand down for the test"
+                },
+                {
+                    date: "August 9, 2025",
+                    mission: "Crew 10 Splashdown",
+                    status: "Splashdown Successfully",
+                    notes: "Crew 10 has successfully splashed down in the Pacific Ocean after completing their set of missions in the ISS. Welcome home!"
+                },
+                {
+                    date: "August 7, 2025",
+                    mission: "Crew 10 Undocking",
+                    status: "Postponed",
+                    notes: "Due to Pacific Ocean Winds"
+                },
+                {
+                    date: "August 1, 2025",
+                    mission: "Crew 11 Launch",
+                    status: "Launched Successfully",
+                    notes: "Weather cleared just in time for Crew 11 to make their way into orbit and chase the ISS. Beautiful in-land landing of first stage, although, cloudy."
+                },
+                {
+                    date: "July 31, 2025",
+                    mission: "Crew 11 Launch",
+                    status: "Postponed",
+                    notes: "Weather was good (~90%) until the LAST window where we heard the 'Hold, hold, hold' call and cried at night."
+                },
+                {
+                    date: "June 23, 2025",
+                    mission: "Transporter-14",
+                    status: "Launched Successfully",
+                    notes: ""
+                },
+                {
+                    date: "May 27, 2025",
+                    mission: "Starship's 9th Flight Test",
+                    status: "Err",
+                    notes: "Successful orbit ig, but uuh reentry... not on the chopsticks."
+                },
+                {
+                    date: "May 1, 2025",
+                    mission: "Starlink Mission",
+                    status: "Successful",
+                    notes: "Just another Starlink Mission!"
+                },
+                {
+                    date: "March 14, 2025",
+                    mission: "Crew 10 Mission",
+                    status: "Successful Launch",
+                    notes: "Crew 10 is off to the ISS, a successful launch on Pi Day, beautiful landing of Falcon 9 booster."
+                },
+            ];
+
+            const allLaunches = [...launches, ...staticLaunches];
+        
+            // Sort all matches in descending order by date
+            allLaunches.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+            allLaunches.forEach(launch => {
+                table.innerHTML += `
+                    <tr>
+                        <td>${launch.date}</td>
+                        <td>${launch.mission}</td>
+                        <td>${launch.status || "TBA"}</td>
+                        <td>${launch.notes || ""}</td>
+                    </tr>
+                `;
+            });
+        }
+        
+        loadSpaceXData();
+    </script>
+</body>
+</html>

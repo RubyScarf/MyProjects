@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCSR</title>
+    <link rel="stylesheet" href="./styles/consistency.css">
+    <link rel="stylesheet" href="./styles/nav.css">
+    <link rel="stylesheet" href="./styles/record.css">
+    <script src="./scripts/mcsr.js" defer></script>
+</head>
+<body>
+<nav>
+    <span class="logo">SUWAN</span>
+    <a href="./Project.html">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+</nav>
+<h1>Minecraft Speedrunning</h1>
+<div class="carousel"></div>
+        <script src="./scripts/mcsr.js"></script>
+        <table id="mcsrTable" border="1">
+            <thead>
+                
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Overworld Type</th>
+                    <th>Bastion Type</th>
+                    <th>End Enter</th>
+                    <th>Notes</th>
+            </thead>
+            <tbody id="mcsrTableBody">
+                <!-- Rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    <script>
+    const supabaseUrl = "https://etqoygahwfwclfgqoxqk.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0cW95Z2Fod2Z3Y2xmZ3FveHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzODU4MzksImV4cCI6MjA4Njk2MTgzOX0.UV3l-ynuuaaDd9anLfa197o0kaQiT1PggyjsS-xn9sQ";
+
+    const supa = supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function loadMatches() {
+        const table = document.getElementById("matchTableBody");
+
+        const { data, error } = await supa
+            .from("entries")
+            .select("*")
+            .eq("category", "soccer")
+            .order("time", { ascending: false });
+
+        if (error) {
+            console.error("Error loading runs:", error);
+            table.innerHTML = "<tr><td colspan='4'>Error loading runs.</td></tr>";
+            return;
+        }
+
+        table.innerHTML = "";
+
+        if (!data || data.length === 0) {
+            table.innerHTML = "<tr><td colspan='4'>No runs yet.</td></tr>";
+            return;
+        }
+
+        data.forEach(match => {
+            table.innerHTML += `
+                <tr>
+                    <td>${new Date(match.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric"
+                    })}</td>
+                    <td>${match.time || "opponent"}</td>
+                    <td>${match.overworld || "bt, dt, village, rp, shipwreck"}</td>
+                    <td>${match.bastion || "stables, housing, bridge, treasure"}</td> 
+                    <td>${match.end_enter || "enter"}</td>
+                    <td>${match.notes}</td>
+                </tr>
+            `;
+        });
+    }
+
+    loadMatches();    
+    async function startPage() {
+    await loadMatches();
+    initializeCarousel(); // now table is filled
+}
+
+startPage();
+
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return new Date(year, month - 1, day)
+        .toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+}
+    </script>
+</body>
+</html>

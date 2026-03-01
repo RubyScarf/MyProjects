@@ -1,0 +1,34 @@
+<div id="dashboard-content"></div>
+
+<form id="form">
+
+    <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="soccer">Soccer</option>
+        <option value="mcsr">MCSR</option>
+        <option value="spacex">SpaceX</option>
+    </select>
+
+    <input type="date" id="date" required>
+
+    <!-- Soccer -->
+    <input type="text" id="opponent" placeholder="Opponent">
+    <input type="text" id="score" placeholder="Score">
+
+    <!-- MCSR -->
+    <input type="text" id="time" placeholder="Run Time">
+    <input type="text" id="overworld" placeholder="Overworld Split">
+    <input type="text" id="bastion" placeholder="Bastion Split">
+    <input type="text" id="end_enter" placeholder="End Enter Split">
+
+    <!-- SpaceX -->
+    <input type="text" id="mission" placeholder="Mission Name">
+    <input type="text" id="status" placeholder="Launch Status">
+
+    <textarea id="notes" placeholder="Notes"></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="SEPARATE.js"></script>
