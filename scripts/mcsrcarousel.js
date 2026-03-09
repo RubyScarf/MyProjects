@@ -4,6 +4,12 @@ function formatRunName(run) {
     return run.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 }
 
+function formatOverworldName(overworld) {
+    return overworld
+        .toLowerCase()
+        .replace(/\s+/g, '_'); // Replace spaces with hyphens
+}
+
 function createCarouselFromTable() {
     const carousel = document.querySelector('.carousel');
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -13,13 +19,13 @@ function createCarouselFromTable() {
         const cells = row.querySelectorAll('td');
         const date = cells[0].textContent.trim();    // Run Date
         const run = cells[1].textContent.trim(); // Run Name
-        const status = cells[2].textContent.trim();  // Status
-        const notes = cells[3]?.textContent.trim() || ""; // Notes (optional)
-        const formattedName = formatRunName(run);
+        const overworld = cells[2].textContent.trim();  // Status
+        const bastion = cells[3]?.textContent.trim() || ""; // Notes (optional)
+        const formattedName = formatOverworldName(overworld);
 
         const item = document.createElement('div');
         item.className = 'carousel-item';
-        item.style.backgroundImage = `url('images/${formattedName}.png')`;
+        item.style.backgroundImage = `url('images/mcsr/${formattedName}.png')`;
         item.style.display = 'none';
 
         const overlay = document.createElement('div');
@@ -31,12 +37,12 @@ function createCarouselFromTable() {
         const runText = document.createElement('p');
         runText.textContent = `Run: ${run}`;
 
-        const statusText = document.createElement('p');
-        statusText.textContent = `Status: ${status}`;
+        const bastionText = document.createElement('p');
+        bastionText.textContent = `Bastion: ${bastion}`;
 
         overlay.appendChild(dateText);
         overlay.appendChild(runText);
-        overlay.appendChild(statusText);
+        overlay.appendChild(bastionText);
 
         item.appendChild(overlay);
         carousel.appendChild(item);
