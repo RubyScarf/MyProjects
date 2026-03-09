@@ -1,7 +1,11 @@
 let currentIndex = 0;
 
 function formatMissionName(mission) {
-    return mission.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return mission
+        .replace(/U-\d+\s/, "") // Remove prefixes like "U-17" or "U-20"
+        .replace(/\s*\(F\)$/, "") // Remove suffix "(F)" for women's games
+        .toLowerCase()
+        .replace(/\s+/g, '_'); // Replace spaces with hyphens
 }
 
 function createCarouselFromTable() {
@@ -19,7 +23,7 @@ function createCarouselFromTable() {
 
         const item = document.createElement('div');
         item.className = 'carousel-item';
-        item.style.backgroundImage = `url('images/${formattedName}.png')`;
+        item.style.backgroundImage = `url('images/spacex/Something_Starlink.jpg')`;
         item.style.display = 'none';
 
         const overlay = document.createElement('div');
