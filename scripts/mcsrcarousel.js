@@ -1,13 +1,10 @@
 let currentIndex = 0;
 
-function formatRunName(run) {
-    return run.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-}
-
 function formatOverworldName(overworld) {
     return overworld
         .toLowerCase()
-        .replace(/\s+/g, '_'); // Replace spaces with hyphens
+        .replace(/[^a-z0-9\s]/g, '') 
+        .replace(/\s+/g, '_');       
 }
 
 function createCarouselFromTable() {
